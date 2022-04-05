@@ -28,6 +28,7 @@
 
 // Load Dolibarr environment
 require '../main.inc.php';
+require_once DOL_DOCUMENT_ROOT . '/core/class/extrafields.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT . '/core/class/html.formprojet.class.php';
@@ -53,6 +54,11 @@ $backtopageforcancel = GETPOST('backtopageforcancel', 'alpha');
 $object = new Skill($db);
 //$diroutputmassaction = $conf->hrm->dir_output.'/temp/massgeneration/'.$user->id;
 $hookmanager->initHooks(array('skillcard', 'globalcard')); // Note that conf->hooks_modules contains array
+
+$extrafields = new ExtraFields($db);
+
+// fetch optionals attributes and labels
+$extrafields->fetch_name_optionals_label($object->table_element);
 
 // Initialize array of search criterias
 $search_all = GETPOST("search_all", 'alpha');
@@ -204,6 +210,11 @@ if ($action == 'create') {
 	// Common attributes
 	include DOL_DOCUMENT_ROOT . '/core/tpl/commonfields_add.tpl.php';
 
+	$parameters = array();
+	if (empty($reshook)) {
+        print $object->showOptionals($extrafields, 'edit', $parameters);
+    }
+
 
 	// SKILLDET ADD
 	//@todo je stop ici ... à continuer  (affichage des 5 skilled input pour create action
@@ -247,6 +258,11 @@ if (($id || $ref) && $action == 'edit') {
 
 	// Common attributes
 	include DOL_DOCUMENT_ROOT . '/core/tpl/commonfields_edit.tpl.php';
+
+	$parameters = array();
+	if (empty($reshook)) {
+        print $object->showOptionals($extrafields, 'edit', $parameters);
+    }
 
 	print '</table>';
 
@@ -419,6 +435,10 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 	$object->fields['label']['visible']=0; // Already in banner
 	include DOL_DOCUMENT_ROOT . '/core/tpl/commonfields_view.tpl.php';
 
+	$parameters = array();
+	if (empty($reshook)) {
+        print $object->showOptionals($extrafields, 'view', $parameters);
+    }
 
 	print '</table>';
 	print '</div>';

@@ -87,7 +87,7 @@ function hrm_admin_prepare_head()
 	$h = 0;
 	$head = array();
 
-	$head[$h][0] = DOL_URL_ROOT.'/hrm/admin/admin_hrm.php';
+	$head[$h][0] = DOL_URL_ROOT.'/admin/hrm.php';
 	$head[$h][1] = $langs->trans("Parameters");
 	$head[$h][2] = 'parameters';
 	$h++;
@@ -102,6 +102,11 @@ function hrm_admin_prepare_head()
 	// $this->tabs = array('entity:+tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__');   to add new tab
 	// $this->tabs = array('entity:-tabname:Title:@mymodule:/mymodule/mypage.php?id=__ID__');   to remove a tab
 	complete_head_from_modules($conf, $langs, null, $head, $h, 'hrm_admin');
+
+	$head[$h][0] = DOL_URL_ROOT.'/hrm/admin/admin_skill_extrafields.php';
+	$head[$h][1] = $langs->trans("ExtraFieldsSkills");
+	$head[$h][2] = 'attributesskills';
+	$h++;
 
 	complete_head_from_modules($conf, $langs, null, $head, $h, 'hrm_admin', 'remove');
 
